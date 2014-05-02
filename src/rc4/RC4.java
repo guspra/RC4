@@ -3,8 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package rc4;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -35,12 +47,13 @@ public class RC4 extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        radioEnkripsi = new javax.swing.JRadioButton();
+        radioDekripsi = new javax.swing.JRadioButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        buttonInputText = new javax.swing.JButton();
+        buttonInputKey = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         jLabel3.setText("jLabel3");
 
@@ -50,18 +63,24 @@ public class RC4 extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("RC4");
 
-        jLabel2.setText("Metode :");
+        jLabel2.setText("Metode              ");
 
-        buttonGroup1.add(jRadioButton1);
-        jRadioButton1.setText("Enkripsi");
-        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonGroup1.add(radioEnkripsi);
+        radioEnkripsi.setSelected(true);
+        radioEnkripsi.setText("Enkripsi");
+        radioEnkripsi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton1ActionPerformed(evt);
+                radioEnkripsiActionPerformed(evt);
             }
         });
 
-        buttonGroup1.add(jRadioButton2);
-        jRadioButton2.setText("Dekripsi");
+        buttonGroup1.add(radioDekripsi);
+        radioDekripsi.setText("Dekripsi");
+        radioDekripsi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radioDekripsiActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -69,11 +88,11 @@ public class RC4 extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jRadioButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jRadioButton2)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(radioEnkripsi)
+                .addGap(63, 63, 63)
+                .addComponent(radioDekripsi)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -82,24 +101,24 @@ public class RC4 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(radioEnkripsi)
+                    .addComponent(radioDekripsi))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        jLabel4.setText("Input :");
+        jLabel4.setText("Pilih File Input   ");
 
-        jButton1.setText("Plaintext");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        buttonInputText.setText("Plaintext");
+        buttonInputText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                buttonInputTextActionPerformed(evt);
             }
         });
 
-        jButton2.setText("Key");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        buttonInputKey.setText("Key");
+        buttonInputKey.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                buttonInputKeyActionPerformed(evt);
             }
         });
 
@@ -109,12 +128,12 @@ public class RC4 extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel4)
-                .addGap(29, 29, 29)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addComponent(buttonInputText, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(buttonInputKey, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -122,22 +141,30 @@ public class RC4 extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(buttonInputText)
+                    .addComponent(buttonInputKey))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        jButton3.setText("PROSES");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jSeparator1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.LEADING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -151,28 +178,218 @@ public class RC4 extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton1ActionPerformed
+    private void radioEnkripsiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioEnkripsiActionPerformed
+        buttonInputText.setText("Plaintext");
+    }//GEN-LAST:event_radioEnkripsiActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        fileChooser.showOpenDialog(this);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void buttonInputTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInputTextActionPerformed
+        BufferedReader bf;
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            try {
+                bf = new BufferedReader(new InputStreamReader(new FileInputStream(file.getAbsolutePath())));
+                String temp = bf.readLine();
+                //merubah input ke biner disimpan dalam variabel keyBiner
+                for (int a = 0; a < temp.length(); a++) {
+                    String biner = Integer.toBinaryString((int) temp.charAt(a));
+                    while (biner.length() < 8) {
+                        biner = "0" + biner;
+                    }
+                    inputText += biner;
+                }
+            } catch (Exception ex) {
+                System.out.println("problem accessing file" + file.getAbsolutePath());
+            }
+        } else {
+            System.out.println("File access cancelled by user.");
+        }
+//        System.out.println(inputText);
+    }//GEN-LAST:event_buttonInputTextActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        fileChooser.showOpenDialog(this);
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void buttonInputKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonInputKeyActionPerformed
+
+        BufferedReader bf;
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            //GET OUTPUT PATH
+            outputPath = file.getAbsolutePath();
+            int b = outputPath.length()-1;
+            while(outputPath.charAt(b)!='\\'){
+                b--;
+            }
+            outputPath = outputPath.substring(0, b+1);
+            //END OF GET OUTPUT PATH
+            try {
+                bf = new BufferedReader(new InputStreamReader(new FileInputStream(file.getAbsolutePath())));
+                String temp = bf.readLine();
+                keyString = temp;
+                //merubah input ke biner disimpan dalam variabel keyBiner
+                for (int a = 0; a < temp.length(); a++) {
+                    String biner = Integer.toBinaryString((int) temp.charAt(a));
+                    while (biner.length() < 8) {
+                        biner = "0" + biner;
+                    }
+                    keyBiner += biner;
+                }
+            } catch (Exception ex) {
+                System.out.println("problem accessing file" + file.getAbsolutePath());
+            }
+        } else {
+            System.out.println("File access cancelled by user.");
+        }
+//        System.out.println(keyBiner);
+    }//GEN-LAST:event_buttonInputKeyActionPerformed
+
+    private static void enkripsi() {
+        //INITIALIZATION
+        for (int i = 0; i <= 255; i++) {
+            s[i] = i;
+            t[i] = (int) keyString.charAt(i % keyString.length());
+        }
+        //END OF INITIALIZATION
+
+        //INITIAL PERMUTATION
+        int i = 0, j = 0;
+        for (i = 0; i <= 255; i++) {
+            j = (j + s[i] + t[i]) % 256;
+            //SWAP
+            int temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+        }
+        //END OF INITIAL PERMUTATION
+        
+        //WRITE TO OUTPUT
+        output1 += "TABEL S SETELAH PERMUTASI AWAL\n";
+        for(int a = 0; a <= 255; a++){
+            output1 +="S["+ a + "] = " + s[a] + "\n";
+        }
+        
+        //STREAM GENERATION
+        i = 0;
+        j = 0;
+        for (int a = 0; a < inputText.length() / 8; a++) {
+            i = (i + 1) % 256;
+            j = (j + s[i]) % 256;
+            //SWAP
+            int temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+            //////
+
+            int t = (s[i] + s[j]) % 256;
+            String biner = Integer.toBinaryString(s[t]);
+            while (biner.length() < 8) {
+                biner = "0" + biner;
+            }
+//            System.out.println(Integer.toHexString(Integer.valueOf(biner, 2)));
+            keyStreamBiner += biner;
+        }
+        //END OF STREAM GENERATION
+
+        //WRITE TO OUTPUT
+        output1 += "\nTABEL S SETELAH ENKRIPSI\n";
+        for(int a = 0; a <= 255; a++){
+            output1 += "S[" +a + "] = " + s[a] + "\n";
+        }
+        
+        //XOR KEYSTREAM(biner) WITH PLAINTEXT(biner)
+        for (int a = 0; a < inputText.length(); a++) {
+            String temp = "";
+            if (keyStreamBiner.charAt(a) == inputText.charAt(a)) {
+                temp = "0";
+            } else {
+                temp = "1";
+            }
+            chiperTextBiner += temp;
+        }
+
+        for (int a = 0; a < chiperTextBiner.length(); a += 8) {
+            System.out.print(Integer.toHexString(Integer.valueOf(chiperTextBiner.substring(a, a + 8), 2)) + " ");
+            chiperTextHexa += Integer.toHexString(Integer.valueOf(chiperTextBiner.substring(a, a + 8), 2));
+            chiperTextString += "" + (char) (int) Integer.valueOf(chiperTextBiner.substring(a,a+8), 2);
+        }
+        output2 += "CHIPERTEXT DALAM BINER :\n" + chiperTextBiner;
+        output2 += "\nCHIPERTEXT DALAM HEXA :\n" + chiperTextHexa;
+        output2 += "\nCHIPERTEXT DALAM ASCII :\n" + chiperTextString;
+        
+        writeHasilEnkripsiToFile();
+    }
+
+    static void writeHasilEnkripsiToFile() {
+//        System.out.println(outputPath);
+
+        try {
+            File file1 = new File(outputPath + "output1.txt");
+            File file2 = new File(outputPath + "output2.txt");
+            
+            // if file doesnt exists, then create it
+            
+                try {
+                    file1.createNewFile();
+                    file2.createNewFile();
+                } catch (IOException ex) {
+                    Logger.getLogger(RC4.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            
+            
+            FileWriter fw1 = new FileWriter(file1.getAbsoluteFile());
+            FileWriter fw2 = new FileWriter(file2.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw1);
+            bw.write(output1);
+            bw.close();
+            bw = new BufferedWriter(fw2);
+            bw.write(output2);
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(RC4.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private static void dekripsi() {
+    }
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        if (radioEnkripsi.isSelected()) {
+            enkripsi();
+        } else {
+            dekripsi();
+        }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void radioDekripsiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioDekripsiActionPerformed
+        buttonInputText.setText("Chipertext");
+    }//GEN-LAST:event_radioDekripsiActionPerformed
+
+    private static int[] s = new int[256];
+    private static int[] t = new int[256];
+    private static String keyBiner = "", inputText = "", keyStreamBiner = "", keyString = "", chiperTextBiner = "", chiperTextString = "", chiperTextHexa = "";
+    private static String outputPath = "", output1 = "",  output2 = "";
+//    private static int  j = 0;
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+//        System.out.println(Integer.toHexString(Integer.valueOf("1110000", 2)));
+//        System.out.println(Integer.valueOf("A",16));
+//        System.out.println(Integer.toHexString(16));
+//        System.out.println(Integer.toBinaryString(255));
+//        System.out.println((int)'p');
+//        System.out.println(Integer.toBinaryString((int) 'p'));
+//        System.out.println(3 ^ 1);
+        System.out.println(Integer.valueOf("01110000", 2));
+//        System.out.println((char) 65);
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -206,17 +423,18 @@ public class RC4 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton buttonInputKey;
+    private javax.swing.JButton buttonInputText;
     private javax.swing.JFileChooser fileChooser;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JRadioButton radioDekripsi;
+    private javax.swing.JRadioButton radioEnkripsi;
     // End of variables declaration//GEN-END:variables
 }
